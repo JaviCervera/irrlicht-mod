@@ -9,7 +9,7 @@ file(GLOB COMMON_FILES "source/Irrlicht/*.cpp" "source/Irrlicht/aesGladman/*.cpp
 file(GLOB MAC_FILES "source/Irrlicht/MacOSX/*.mm")
 
 #Add header and lib directories
-include_directories(${INCLUDE_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/source/Irrlicht/zlib)
+include_directories(${INCLUDE_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/source/Irrlicht ${CMAKE_CURRENT_SOURCE_DIR}/source/Irrlicht/zlib)
 #link_directories(${LINK_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR}/lib/irrlicht ${CMAKE_CURRENT_SOURCE_DIR}/lib/sdl)
 
 #Add executable targets
@@ -31,14 +31,16 @@ set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++98 -fno-exceptions -fno-rtti -ff
 if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 	message("Platform is Windows")
 	add_definitions(-D__GNUWIN32__ -DWIN32 -D_WINDOWS -DNDEBUG -D_MBCS -D_CRT_SECURE_NO_DEPRECATE)
+	set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-fno-exceptions")
 	set(CMAKE_SHARED_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS} "-s -static")
 	target_link_libraries(irrlicht_dll -lkernel32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lwinmm -lopengl32 ${TARGET_LINK_LIBRARIES})
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	message("Platform is macOS")
 	set(CMAKE_SHARED_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS} "-s")
-	target_link_libraries(irrlicht_dll "-framework OpenGL" ${TARGET_LINK_LIBRARIES})
+	target_link_libraries(irrlicht_dll "-framework AppKit" "-framework Carbon "-framework IOKit" "-framework OpenGL" ${TARGET_LINK_LIBRARIES})
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 	message("Platform is Linux")
+	set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-fno-exceptions")
 	set(CMAKE_SHARED_LINKER_FLAGS ${CMAKE_SHARED_LINKER_FLAGS} "-s")
 	target_link_libraries(irrlicht_dll -lGL -lXxf86vm ${TARGET_LINK_LIBRARIES})
 else (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
