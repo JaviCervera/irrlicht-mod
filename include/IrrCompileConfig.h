@@ -63,6 +63,9 @@
 #define _IRR_WINDOWS_
 #define _IRR_WINDOWS_API_
 #define _IRR_COMPILE_WITH_WINDOWS_DEVICE_
+#ifdef NO_IRR_COMPILE_WITH_PLATFORM_DEVICE_
+#undef _IRR_COMPILE_WITH_WINDOWS_DEVICE_
+#endif
 #endif
 
 //! WINCE is a very restricted environment for mobile devices
@@ -95,6 +98,9 @@
 #endif
 #define _IRR_OSX_PLATFORM_
 #define _IRR_COMPILE_WITH_OSX_DEVICE_
+#ifdef NO_IRR_COMPILE_WITH_PLATFORM_DEVICE_
+#undef _IRR_COMPILE_WITH_OSX_DEVICE_
+#endif
 #endif
 
 #if !defined(_IRR_WINDOWS_API_) && !defined(_IRR_OSX_PLATFORM_)
@@ -103,6 +109,9 @@
 #endif
 #define _IRR_POSIX_API_
 #define _IRR_COMPILE_WITH_X11_DEVICE_
+#ifdef NO_IRR_COMPILE_WITH_PLATFORM_DEVICE_
+#undef _IRR_COMPILE_WITH_X11_DEVICE_
+#endif
 #endif
 
 
