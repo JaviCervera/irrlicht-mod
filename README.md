@@ -1,15 +1,20 @@
-# The Irrlicht Engine SDK version 1.8.4
+# The Irrlicht Engine SDK version 1.8.4 - Modified version
 
 Welcome the Irrlicht Engine SDK.
 
 Content of this file:
 
+0. Additions over standard Irrlicht 1.8.4
 1. Directory Structure Overview
 2. How To Start
 3. Requirements
 4. Release Notes
 5. License
 6. Contact
+
+## 0. Additions over standard Irrlicht 1.8.4
+
+* CMake based toolchain.
 
 ## 1. Directory Structure Overview
 
