@@ -7,6 +7,8 @@ project(Irrlicht)
 #Options
 option(IRRLICHT_M32 "Pass the -m32 flag to the compiler to build 32 bit application" OFF)
 option(IRRLICHT_SHARED "Compile Irrlicht as a shared library" OFF)
+option(SDL_ENABLED "Use SDL platform" OFF)
+set(SDL_PATH "SDL" CACHE PATH "Path to SDL folder (must contain include and lib subfolders)")
 
 #Define file groups
 file(GLOB COMMON_FILES "source/Irrlicht/*.cpp" "source/Irrlicht/aesGladman/*.cpp" "source/Irrlicht/bzip2/*.c" "source/Irrlicht/jpeglib/*.c" "source/Irrlicht/libpng/*.c" "source/Irrlicht/lzma/*.c" "source/Irrlicht/zlib/*.c")
@@ -14,6 +16,11 @@ file(GLOB MAC_FILES "source/Irrlicht/MacOSX/*.mm")
 
 #Add header and lib directories
 include_directories(${INCLUDE_DIRECTORIES} ${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_SOURCE_DIR}/source/Irrlicht ${CMAKE_CURRENT_SOURCE_DIR}/source/Irrlicht/zlib)
+if (SDL_ENABLED)
+	include_directories(${INCLUDE_DIRECTORIES} ${SDL_PATH}/include)
+	link_directories(${LINK_DIRECTORIES} ${SDL_PATH}/lib)
+	add_definitions(-D_IRR_COMPILE_WITH_SDL_DEVICE_ -DNO_IRR_COMPILE_WITH_WINDOWS_DEVICE_ -DNO_IRR_COMPILE_WITH_OSX_DEVICE_ -DNO_IRR_COMPILE_WITH_X11_DEVICE_)
+endif (SDL_ENABLED)
 
 #Add executable targets
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -53,6 +60,9 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Windows")
 		set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -s -static")
 		target_link_libraries(Irrlicht -lkernel32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lwinmm -lopengl32 ${TARGET_LINK_LIBRARIES})
 	endif (IRRLICHT_SHARED)
+	if (SDL_ENABLED AND IRRLICHT_SHARED)
+		target_link_libraries(Irrlicht -lSDL.dll ${TARGET_LINK_LIBRARIES})
+	endif (SDL_ENABLED AND IRRLICHT_SHARED)
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 	message("Platform is macOS")
 	if (IRRLICHT_SHARED)
