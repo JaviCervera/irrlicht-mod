@@ -11,7 +11,7 @@
 	#include <SDL/SDL_endian.h>
 	#define bswap_16(X) SDL_Swap16(X)
 	#define bswap_32(X) SDL_Swap32(X)
-#if defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
+#elif defined(_IRR_COMPILE_WITH_SDL2_DEVICE_)
 	#include <SDL2/SDL_endian.h>
 	#define bswap_16(X) SDL_Swap16(X)
 	#define bswap_32(X) SDL_Swap32(X)
