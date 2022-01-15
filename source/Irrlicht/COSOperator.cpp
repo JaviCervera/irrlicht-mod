@@ -13,7 +13,9 @@
 #include <unistd.h>
 #ifndef _IRR_SOLARIS_PLATFORM_
 #include <sys/types.h>
+#ifdef _IRR_OSX_PLATFORM_
 #include <sys/sysctl.h>
+#endif
 #endif
 #endif
 
@@ -169,19 +171,32 @@ bool COSOperator::getProcessorSpeedMHz(u32* MHz) const
 bool COSOperator::getSystemMemory(u32* Total, u32* Avail) const
 {
 #if defined(_IRR_WINDOWS_API_) && !defined (_IRR_XBOX_PLATFORM_)
+
+    #if (_WIN32_WINNT >= 0x0500)
+	MEMORYSTATUSEX MemoryStatusEx;
+ 	MemoryStatusEx.dwLength = sizeof(MEMORYSTATUSEX);
+
+	// cannot fail
+	GlobalMemoryStatusEx(&MemoryStatusEx);
+
+	if (Total)
+		*Total = (u32)(MemoryStatusEx.ullTotalPhys>>10);
+	if (Avail)
+		*Avail = (u32)(MemoryStatusEx.ullAvailPhys>>10);
+	return true;
+	#else
 	MEMORYSTATUS MemoryStatus;
 	MemoryStatus.dwLength = sizeof(MEMORYSTATUS);
 
-	// cannot fail
+ 	// cannot fail
 	GlobalMemoryStatus(&MemoryStatus);
 
-	if (Total)
+ 	if (Total)
 		*Total = (u32)(MemoryStatus.dwTotalPhys>>10);
-	if (Avail)
+ 	if (Avail)
 		*Avail = (u32)(MemoryStatus.dwAvailPhys>>10);
-
-	_IRR_IMPLEMENT_MANAGED_MARSHALLING_BUGFIX;
-	return true;
+    return true;
+	#endif
 
 #elif defined(_IRR_POSIX_API_) && !defined(__FreeBSD__)
 #if defined(_SC_PHYS_PAGES) && defined(_SC_AVPHYS_PAGES)
@@ -198,7 +213,7 @@ bool COSOperator::getSystemMemory(u32* Total, u32* Avail) const
 		*Avail = (u32)((ps*(long long)ap)>>10);
 	return true;
 #else
-	// TODO: implement for non-availablity of symbols/features
+	// TODO: implement for non-availability of symbols/features
 	return false;
 #endif
 #else
