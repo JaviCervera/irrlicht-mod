@@ -626,7 +626,7 @@ COpenGLDriver::COpenGLDriver(const SIrrlichtCreationParameters& params,
 #ifdef _IRR_COMPILE_WITH_SDL2_DEVICE_
 //! SDL constructor and init code
 COpenGLDriver::COpenGLDriver(const SIrrlichtCreationParameters& params,
-		io::IFileSystem* io, CIrrDeviceSDL* device)
+		io::IFileSystem* io, CIrrDeviceSDL2* device)
 : CNullDriver(io, params.WindowSize), COpenGLExtensionHandler(),
 	CurrentRenderMode(ERM_NONE), ResetRenderStates(true),
 	Transformation3DChanged(true), AntiAlias(params.AntiAlias),
