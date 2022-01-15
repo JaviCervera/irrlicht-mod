@@ -1,4 +1,36 @@
 --------------------------
+Changes in 1.8.5
+ - Fix some aes compile warnings on gcc about fall-throughs.
+ - No longer include sys/sysctl.h on other platforms than OSX. Fixes compile errors in COSOperator on newer Linux systems.
+ - Update script to generate tutorial.html's in example folders. Add missing ones. Update existing ones. Thanks @Guillian J for noticing those were outdated.
+ - Update libpng to 1.6.37 (from 1.6.23)
+ - Fix CIrrDeviceSDL::getVideoModeList which didn't return video modes before. Thx @kas1e for report and patch.
+ - CIrrDeviceMacOSX now sets the SEvent.MouseInput Shift and Control values on mouse events like the other devices. Thanks @ Zero King  for patch (#321)
+ - isWindowFocused in IrrDeviceSDL device now returns the input focus like the other devices. Before it was returning a mouse-over-window state.
+ - Prevent SDL device from dropping OpenGL resources on Win32 when setResizable was called with OpenGL driver. Thanks @ kas1e for reporting (http://irrlicht.sourceforge.net/forum/viewtopic.php?f=7&t=52083&start=0)
+   And thanks to http://www.bytehazard.com/articles/sdlres.html for the workaround.
+ - Fix isWindowActive when using SDL device. Before it was only active when the mouse was over the window. Thanks @ kas1e for reporting (http://irrlicht.sourceforge.net/forum/viewtopic.php?f=7&t=52083&start=0)
+ - Fix SViewFrustum::clipLine. Was before clipping at wrong points (inverse places along lines).
+ - Fix compilation on OSX and prevent capturing mouse cursor when Window is not on top (Patch #319)
+   Thanks at Artem Shoobovych for bugreport and patch (https://sourceforge.net/p/irrlicht/patches/319/)
+ - Fix serialization of OverrideTextColorEnabled flag in CGUITab. Thanks @ chronologicaldot for reporting (http://irrlicht.sourceforge.net/forum/viewtopic.php?f=7&t=52344&p=303891#p303891)
+ - CFileSystem::getAbsolutePath no longer wrongly converts an empty filename to "/" on unix platforms.
+   This fixes the bug that CFileSystem::createAndOpenFile("") returned a (strange behaving) non-null file pointer.
+   Additional check also added in createAndOpenFile to early out on empty names.
+ - Fix bug in cursor positions when compiled with newer Windows SDK's (v110 in VS2012) and running on Systems >= Windows Vista in windowed mode.
+   Thanks @Mustapha Tachouct for the bugreport and patch proposal. Also thanks @BakeMyCake for an earlier report.
+ - IOSOperator::getSysteMemory() no longer returns incorrect values with >2GB. Thanks @Eduline - human development for report and patch.
+ - Increase KEY_KEY_CODES_COUNT to fix problem with laptop keyboards which return the keycode 0xff for the function key. Thx @Klokancz for bugreport and patch.
+ - Fix bug when calling activateJoysticks on windows several times. It had appened joystick information instead of replacing it, thereby increasing joystick number on each call.
+   Only happened compiling with _IRR_COMPILE_WITH_DIRECTINPUT_JOYSTICK_ (which is the default). Linux and SDL implementation not affected.
+   Thx @Andrea Demetrio for the bugreport.
+ - Fix bug in fast_atof when reading floating point numbers with more than 16 digits past the dot. Those produced completely wrong results (sometimes even causing INF numbers).
+   This bug also did cause many meshloaders to have problems with certain meshes (basically all text-based formats are affected).
+ - Accuracy of fast_atof is back to older Irrlicht versions (fixes test warnings, usually not a noticable problem).
+ - Fix crash in eventhandling when calling remove() on a contextmenu while it has focus.
+ - CImageLoaderJPG::isALoadableFileFormat uses a test which allows to load more jpg formats (for example uncompressed jpg's). Thx @Yaron Cohen-Tal for report, test-image and his help with the patch.
+
+--------------------------
 Changes in 1.8.4 (9th July 2016, svn r5321)
  - Tests on Unix now have a short pause between switching drivers to avoid certain X11 errors.
  - Fix CEnumAttribute::getInt() which could crash  (thx @ luthyr for reporting)
@@ -7,7 +39,7 @@ Changes in 1.8.4 (9th July 2016, svn r5321)
  - Deprecate CMatrix4::transformBox as the result is no longer a boundingbox. Use CMatrix4::transformBoxEx instead (which has been available for a long time).
  - Fix CSceneCollisionManager::getPickedNodeBB which could sometimes miss collisions.
  - Add -U__STRICT_ANSI__ option to c::b project files to allow compiling with -std=c++11 and add an error when trying to compile with Irrlicht with __STRICT_ANSI__
- - Update libpng to 1.6.21
+ - Update libpng to 1.6.23
  - Update zlib to 1.2.8
  - Fix some compile warnings in aes which got handled as errors by some c++11 compilers.
  - Get rid of some misleading-indentation warnings in gcc6
@@ -91,7 +123,7 @@ Changes in 1.8 (7.11.2012)
 
  - quaternion conversions to and from matrix4 no longer invert rotations. 
    To test if your code was affected by this you can set IRR_TEST_BROKEN_QUATERNION_USE in quaternion.h and try to compile your application.
-   Then on all compile-errors when you pass the matrix to the quaternion you can replace the matrix transposed matrix.
+   Then on all compile-errors when you pass the matrix to the quaternion you can replace the matrix with the transposed matrix.
    For all errors you get on getMatrix() you can use quaternion::getMatrix_transposed instead.
 
  - CGUIEnvironment::loadGui - loading a gui into a target-element no longer messes up when the gui-file contained guienvironment serialization.

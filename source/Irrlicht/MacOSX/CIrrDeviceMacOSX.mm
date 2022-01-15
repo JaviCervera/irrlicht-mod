@@ -495,8 +495,8 @@ CIrrDeviceMacOSX::CIrrDeviceMacOSX(const SIrrlichtCreationParameters& param)
 		if(!CreationParams.WindowId) //load menus if standalone application
 		{
 			[[NSAutoreleasePool alloc] init];
-			[NSApplication sharedApplication];
-            [NSApp setDelegate:(id<NSApplicationDelegate>)[[[AppDelegate alloc] initWithDevice:this] autorelease]];
+			[[NSApplication sharedApplication] activateIgnoringOtherApps:YES];
+			[NSApp setDelegate:(id<NSApplicationDelegate>)[[[AppDelegate alloc] initWithDevice:this] autorelease]];
 			//[NSBundle loadNibNamed:@"MainMenu" owner:[NSApp delegate]];
 			[NSApp finishLaunching];
 		}
@@ -1259,7 +1259,12 @@ void CIrrDeviceMacOSX::postMouseEvent(void *event,irr::SEvent &ievent)
 	}
 
 	if (post)
+	{
+		ievent.MouseInput.Shift = ([(NSEvent *)event modifierFlags] & NSShiftKeyMask) != 0;
+		ievent.MouseInput.Control = ([(NSEvent *)event modifierFlags] & NSControlKeyMask) != 0;
+		
 		postEventFromUser(ievent);
+	}
 
 	[NSApp sendEvent:(NSEvent *)event];
 }
