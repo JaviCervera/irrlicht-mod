@@ -15,7 +15,7 @@
 #include "CIrrDeviceSDL2.h"
 #include "IEventReceiver.h"
 #include "irrList.h"
-#include "irrOS.h"
+#include "os.h"
 #include "CTimer.h"
 #include "irrString.h"
 #include "Keycodes.h"
@@ -206,7 +206,7 @@ namespace irr
 		if (Close)
 			return false;
 
-		if (CreationParams.DriverType == video::EDT_OPENGLES)
+		/*if (CreationParams.DriverType == video::EDT_OPENGLES)
 		{
 			SDL_SetHint(SDL_HINT_OPENGL_ES_DRIVER, "1");
 
@@ -220,7 +220,7 @@ namespace irr
 			SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 		}
 		else
-		{
+		{*/
 			SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 			SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 			SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -229,7 +229,7 @@ namespace irr
 			SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
 
 			SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-		}
+		//}
 
 		int flags = SDL_WINDOW_OPENGL;
 
@@ -269,6 +269,7 @@ namespace irr
 #endif
 			break;
 
+		/*
 		case video::EDT_OPENGLES:
 #ifdef _IRR_COMPILE_WITH_OGLES3_
 			VideoDriver = video::createOGLES3Driver(CreationParams, FileSystem);
@@ -276,6 +277,7 @@ namespace irr
 			os::Printer::log("No OpenGLES3 support compiled in.", ELL_ERROR);
 #endif
 			break;
+		*/
 
 		case video::EDT_NULL:
 			VideoDriver = video::createNullDriver(FileSystem, CreationParams.WindowSize);
@@ -490,10 +492,10 @@ namespace irr
 						if (VideoDriver)
 							VideoDriver->OnResize(core::dimension2d<u32>(Width, Height));
 
-						irrevent.EventType = irr::EET_GAME_RESIZE;
+						/*irrevent.EventType = irr::EET_GAME_RESIZE;
 						irrevent.UserEvent.UserData1 = (s32)Width;
 						irrevent.UserEvent.UserData2 = (s32)Height;
-						postEventFromUser(irrevent);
+						postEventFromUser(irrevent);*/
 					}
 					break;
 				case SDL_WINDOWEVENT_ENTER:
