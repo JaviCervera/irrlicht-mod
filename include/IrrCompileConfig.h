@@ -34,6 +34,7 @@
 //! _IRR_COMPILE_WITH_OSX_DEVICE_ for Cocoa native windowing on OSX
 //! _IRR_COMPILE_WITH_X11_DEVICE_ for Linux X11 based device
 //! _IRR_COMPILE_WITH_SDL_DEVICE_ for platform independent SDL framework
+//! _IRR_COMPILE_WITH_SDL2_DEVICE_ for platform independent SDL2 framework
 //! _IRR_COMPILE_WITH_CONSOLE_DEVICE_ for no windowing system, used as a fallback
 //! _IRR_COMPILE_WITH_FB_DEVICE_ for framebuffer systems
 
@@ -48,6 +49,12 @@
 //#define _IRR_COMPILE_WITH_SDL_DEVICE_
 #ifdef NO_IRR_COMPILE_WITH_SDL_DEVICE_
 #undef _IRR_COMPILE_WITH_SDL_DEVICE_
+#endif
+
+//! Uncomment this line to compile with the SDL2 device
+//#define _IRR_COMPILE_WITH_SDL2_DEVICE_
+#ifdef NO_IRR_COMPILE_WITH_SDL2_DEVICE_
+#undef _IRR_COMPILE_WITH_SDL2_DEVICE_
 #endif
 
 //! Comment this line to compile without the fallback console device.
@@ -85,6 +92,7 @@
 	//#define _IRR_COMPILE_WITH_WINDOWS_DEVICE_
 	#undef _IRR_COMPILE_WITH_WINDOWS_DEVICE_
 	//#define _IRR_COMPILE_WITH_SDL_DEVICE_
+	//#define _IRR_COMPILE_WITH_SDL2_DEVICE_
 
 	#include <xtl.h>
 #endif
