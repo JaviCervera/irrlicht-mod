@@ -37,7 +37,8 @@ namespace irr
 	namespace video
 	{
 #if defined(_IRR_COMPILE_WITH_OPENGL_)
-		IVideoDriver* createOpenGLDriver(const irr::SIrrlichtCreationParameters& params, io::IFileSystem* io);
+		IVideoDriver* createOpenGLDriver(const SIrrlichtCreationParameters& params,
+				io::IFileSystem* io, CIrrDeviceSDL2* device);
 #endif
 
 #if defined(_IRR_COMPILE_WITH_OGLES3_)
@@ -263,7 +264,7 @@ namespace irr
 		{
 		case video::EDT_OPENGL:
 #ifdef _IRR_COMPILE_WITH_OPENGL_
-			VideoDriver = video::createOpenGLDriver(CreationParams, FileSystem);
+			VideoDriver = video::createOpenGLDriver(CreationParams, FileSystem, this);
 #else
 			os::Printer::log("No OpenGL support compiled in.", ELL_ERROR);
 #endif
