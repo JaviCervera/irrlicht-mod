@@ -10,11 +10,9 @@
 
 #ifdef _IRR_COMPILE_WITH_OSX_DEVICE_
 
-#ifdef __OBJC__
 #import <AppKit/NSWindow.h>
 #import <AppKit/NSOpenGL.h>
 #import <AppKit/NSBitmapImageRep.h>
-#endif
 
 #include "CIrrDeviceStub.h"
 #include "IrrlichtDevice.h"
@@ -227,12 +225,10 @@ namespace irr
 		void postKeyEvent(void *event, irr::SEvent &ievent, bool pressed);
 		void pollJoysticks();
 
-#ifdef __OBJC__
 		NSWindow *Window;
 		CGLContextObj CGLContext;
 		NSOpenGLContext *OGLContext;
 		NSBitmapImageRep *SoftwareDriverTarget;
-#endif
 		std::map<int,int> KeyCodes;
 		int DeviceWidth;
 		int DeviceHeight;
